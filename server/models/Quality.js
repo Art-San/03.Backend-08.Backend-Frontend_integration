@@ -3,14 +3,14 @@ const {Schema, model} = require('mongoose')
 const shema = new Schema({
     name: {
         type: String,
-        required: true  // обязательное ли это поле
+        required: true
     },
     color: {
         type: String,
         required: true 
     }
 }, {
-    timestamps: true // добавляет дату создания и дата обновления
+    timestamps: true
 })
 
 module.exports = model('Quality', shema)

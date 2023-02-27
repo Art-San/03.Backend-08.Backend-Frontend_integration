@@ -2,13 +2,13 @@ const {Schema, model} = require('mongoose')
 
 const shema = new Schema({
     content: { type: String, required: true },
-    // На чьей странице находится коментарий
-    pageId: { type: Schema.Types.ObjectId, ref: 'User', required: true }, // ref - связь между колекциеей 
-    // айди человеко которфй оставил уоментарий
+    
+    pageId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    
     userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     
 }, {
-    timestamps: { createdAt: 'created_at'} // меняем ключ на 'снижнем подчеркиванием'
+    timestamps: { createdAt: 'created_at'}
 })
 
 module.exports = model('Comment', shema)

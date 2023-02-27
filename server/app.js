@@ -23,7 +23,7 @@ const PORT = config.get('port') ?? 8080
 
 async function start() {
     try {
-        mongoose.connection.once('open', () => {  //обращаемся к соединнению с БД (моногоДБ) единожды (once) 
+        mongoose.connection.once('open', () => {
             initDatabase()
         })
         await mongoose.connect(config.get('mongoUrl'))

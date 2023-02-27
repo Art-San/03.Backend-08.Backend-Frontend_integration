@@ -1,12 +1,11 @@
 const tokenService = require('../services/token.service')
 
 module.exports = (req, res, next) => {
-    if (req.methhod === 'OPTIONS') {  // OPTIONS спец метод для запросов, проверяет доступность сервера
+    if (req.methhod === 'OPTIONS') {
         return next()
     }
 
     try {
-        // Bearer gfjhkholjkmnvgshhjhkhlgl
        const token = req.headers.authorization.split(' ')[1]
        if (!token) {
         return res.status(401).json({message: 'Unauthorized'})
@@ -20,7 +19,7 @@ module.exports = (req, res, next) => {
 
       req.user = data
 
-      next()         // очень важно вызвать здесь этот метод что остальные Middleware выполняличь их цепочка не прекращалась
+      next()    
     } catch (e) {
         res.status(401).json({message: 'Unauthorized'})
     }

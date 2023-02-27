@@ -7,15 +7,7 @@ const tokenService = require('../services/token.service')
 const Token = require('../models/Token')
 const router = express.Router({ mergeParams: true })
 
-// // /api/auth/signUp <-
-// 1. get data from req (email, password ...)
-// 2. check if users already exist
-// 3. hash password
-// 4. create users
-// 5 generate tokens
-// 6. validaciya
-// в Postmanу http://localhost:8080/api/auth/signUp
-router.post('/signUp', [   // hendler - async (req, res) => {} оборачивае  [в квадратные] и запихиваем chek
+router.post('/signUp', [   
 check('email', "Некорректный email").isEmail(),
 check('password', 'Минимальная длина пороля 8 символов').isLength({min: 8}),
     async (req, res) => {
@@ -26,7 +18,7 @@ check('password', 'Минимальная длина пороля 8 символ
                     error: {
                         message: 'INVALID_DATA',
                         code: 400,
-                        errors: errors.array()   // смотрим что там за ошибки
+                        errors: errors.array()
                     }
                 })
             }
@@ -43,12 +35,11 @@ check('password', 'Минимальная длина пороля 8 символ
                 })
             }
 
-            const hashedPassword = await bcrypt.hash(password, 12) // шифруем пароль полученый из req.body 12-это сложность шифрования
+            const hashedPassword = await bcrypt.hash(password, 12) 
 
             const newUser = await User.create({
-                ...generateUserData(), // учитыва что данная функция возвращает объект то тоже ее развернем ...generateUserData
-                ...req.body,                //  в таком порядке если что то ...req.body перепишет enerateUserData, и затем уже пароль
-                password: hashedPassword
+                ...generateUserData(),
+                ...req.body,                
             })
 
         const tokens = tokenService.generate({ _id: newUser._id })
@@ -64,15 +55,10 @@ check('password', 'Минимальная длина пороля 8 символ
         }
 }])
 
-// 1. validate
-// 2. find user
-// 3. compare hashed password
-// 4. generate token
-// 5. return date
-// в Postmanу http://localhost:8080/api/auth/signInWithPassword
+
 router.post('/signInWithPassword', [
     check('email', 'Email некорректный').normalizeEmail().isEmail(),
-    check('password', 'Пароль не может быть пустым').exists(), // exists() - на наличие
+    check('password', 'Пароль не может быть пустым').exists(), 
     async (req, res) => {
         try {
             const errors = validationResult(req)
@@ -98,7 +84,7 @@ router.post('/signInWithPassword', [
                 })
             }
 
-         const isPasswordEquel = await bcrypt.compare(password, existingUser.password) // conpare- сравниваем пришедший парол и пароль в базе
+         const isPasswordEquel = await bcrypt.compare(password, existingUser.password)
         
          if (!isPasswordEquel) {
             return res.status(400).send({
@@ -140,9 +126,6 @@ router.post('/token', async (req, res) => {
         })
         await tokenService.save(data._id, tokens.refreshToken)
 
-        // console.log('data', data)       // если просто остави консоль.лог и не завершим запрос 
-
-        // res.status(200).send({data})    // с помощью res.status(200).send({data}) то сервер будет виснуть
         res.status(200).send({ ...tokens, userId: data._id}) 
     } catch (e) {
         res.status(500).json({

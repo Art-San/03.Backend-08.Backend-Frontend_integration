@@ -1,8 +1,3 @@
-// 1. У любого пользователя в БД будет как минимум qualities & professions
-// 2.  Они равны mock данным
-
-// через модели взаимодествуем с БД
-
 const Profession = require('../models/Profession')
 const Quality = require('../models/Quality')
 const professionsMock = require('../mock/professions.json')
@@ -10,7 +5,7 @@ const qualitiesMock = require('../mock/qualities.json')
 
 
 module.exports = async () => {
-  const professions = await Profession.find() // find всегда возвращает массив
+  const professions = await Profession.find()
 
   if (professions.length !== professionsMock.length) {
    await createInitialEntity(Profession, professionsMock)
@@ -25,7 +20,7 @@ module.exports = async () => {
 }
 
 async function createInitialEntity(Model, data) {
-    await Model.collection.drop()                   // предворительно очищаем колекцию
+    await Model.collection.drop() 
     return Promise.all(
         data.map(async item => {
             try {
