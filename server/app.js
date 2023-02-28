@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose') // для подключенния удаллено к MongoDB 
 const config = require('config')
 const chalk = require('chalk')
+const cors = require('cors')
 const initDatabase = require('./start/initDatabase')
 const routes = require('./routes')
 
@@ -9,6 +10,7 @@ const app = express()
 
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
+app.use(cors())
 
 // /api --> 
 app.use('/api', routes)
