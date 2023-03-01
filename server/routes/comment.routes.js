@@ -25,6 +25,7 @@ router
             })
             res.status(201).send(newComment)
         } catch (e) {
+            console.log('e.message', e.message)
             res.status(500).json({
                 message: 'На сервере произошла ошибкаю Попробуйте позже'
             })
@@ -36,8 +37,9 @@ router
 router.delete('/:commentId', auth, async (req, res) => {
     try {
         const { commentId } = req.params
-        const removedComment = await Comment.find({ _id: commentId })
-        // const removedComment = await Comment.findById(commentId)
+        console.log('commentId', commentId )
+        // const removedComment = await Comment.find({ _id: commentId }) // ЭТА ХРЕНЬ НЕ РАБОТАЕТ
+        const removedComment = await Comment.findById(commentId)
 
         if (removedComment.userId.toString() === req.user._id) {
             await removedComment.remove()
