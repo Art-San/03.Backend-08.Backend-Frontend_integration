@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const config = require('config')
 const chalk = require('chalk')
 const cors = require('cors')
-const initDatabase = require('./startUp/initDatabase')
+const initDatabase = require('./start/initDatabase')
 const routes = require('./routes')
 
 const app = express()
@@ -29,7 +29,7 @@ async function start() {
       initDatabase()
     })
     await mongoose.connect(config.get('mongoUri'))
-    console.log(chalk.green(`MongoDB connected.`))
+    console.log(chalk.cyanBright('MongoDB connected'))
     app.listen(PORT, () =>
       console.log(chalk.green(`Server has been started on port ${PORT}...`))
     )
